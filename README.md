@@ -22,11 +22,17 @@ Here's how our app makes magic happen:
 
 *Main Interface - Everything you need at your fingertips.*
 
-![Small Preset](small.png)
+![Small 16 Preset](small-16-colors.png)
 
 *Small Preset - Great things come in small packages!*
 
 52 KB @ 25% Resizing and 16 Colors.
+
+![Small 256](small-16-colors.png)
+
+*Small with Full Color Example - Still Pretty Small!*
+
+131 KB @ 25% Resizing and 256 Colors.
 
 ![Full Preset](full.png)
 
