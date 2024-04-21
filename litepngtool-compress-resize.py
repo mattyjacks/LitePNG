@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog, Entry, Label, Button
+from tkinter import filedialog, Entry, Label, Button, Checkbutton, IntVar
 import imageio
 import numpy as np
 import os
@@ -29,13 +29,13 @@ class PNGCompressorApp:
         btn_frame.pack(fill=tk.X, padx=20, pady=10)
 
         btn_add = Button(btn_frame, text="Add PNG Files", command=self.add_files, padx=10, pady=5)
-        btn_add.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        btn_add.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
         btn_remove = Button(btn_frame, text="Remove Selected", command=self.remove_selected, padx=10, pady=5)
-        btn_remove.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        btn_remove.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
         btn_compress = Button(btn_frame, text="Compress and Save", command=self.compress_and_save, padx=10, pady=5)
-        btn_compress.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        btn_compress.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
         # Resize scale and Quality settings
         settings_frame = tk.Frame(root, bg='#ADD8E6')
@@ -51,10 +51,15 @@ class PNGCompressorApp:
         self.colors_entry.pack(side=tk.LEFT, padx=5)
         self.colors_entry.insert(0, "256")
 
+        # Opacity Fill Checkbox
+        self.opacity_var = IntVar(value=1)  # Default is on
+        Checkbutton(settings_frame, text="Opacity Fill", variable=self.opacity_var, bg='#ADD8E6').pack(side=tk.LEFT, padx=10)
+
         Label(settings_frame, text="Presets:", bg='#ADD8E6').pack(side=tk.LEFT, padx=5)
 
         # Preset Buttons for Resize and Colors
         Button(settings_frame, text="Small", command=lambda: self.apply_preset(25, 16), padx=5, pady=5).pack(side=tk.LEFT, padx=5)
+        Button(settings_frame, text="Medium", command=lambda: self.apply_preset(50, 16), padx=5, pady=5).pack(side=tk.LEFT, padx=5)
         Button(settings_frame, text="Full", command=lambda: self.apply_preset(100, 256), padx=5, pady=5).pack(side=tk.LEFT, padx=5)
 
     def apply_preset(self, resize_percentage, colors):
@@ -86,6 +91,9 @@ class PNGCompressorApp:
                 image = np.array(Image.fromarray(image).resize(new_dims, Image.LANCZOS))
             if colors > 0 and colors <= 256:
                 image = (image // (256 // colors)) * (256 // colors)
+            if self.opacity_var.get() == 1:
+                alpha_channel = image[:, :, 3]  # Assuming the alpha channel is the last
+                image[:, :, 3] = np.where(alpha_channel > 0, 255, 0)
             save_path = filedialog.asksaveasfilename(initialfile=f"lite-{os.path.basename(file_path)}", defaultextension=".png", filetypes=[("PNG files", "*.png")])
             if save_path:
                 imageio.imwrite(save_path, image, format='PNG')
