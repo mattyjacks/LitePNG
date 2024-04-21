@@ -1,4 +1,5 @@
-# 🎨 LitePNG -> Compressor and Resizer 🛠️
+# 🎨🛠️ LitePNG -> 
+## Color Compressor and Resizer
 
 Welcome to the repository of the LitePNG Compressor and Resizer, a lightweight and powerful tool designed to make your PNG images lean and fast! Whether you're looking to save space or optimize images for web use, this tool has got you covered. 🚀
 
